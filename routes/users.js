@@ -31,7 +31,6 @@ import Trainee from '../models/TraineeModel';
 import Course from '../models/CourseModel';
 import Topic from '../models/TopicModel';
 import CourseCategory from '../models/CourseCategoryModel';
-import mongoose from 'mongoose';
 const router = Router();
 
 // Use Session
@@ -833,6 +832,32 @@ router.get('/trainer/home', isTrainer, (req, res, next) => {
       .catch((err) => {
         res.send(err);
       });
+});
+
+router.get('/trainer/view_course', (req, res, next) => {
+  const course = {};
+  Trainer.findOne({account_id: req.session.userId}).exec((err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      Topic.findOne({_id: user.topic_id}).exec((err, topic) => {
+        if (err) {
+          console.log(err);
+        } else {
+          Course.findOne({_id: topic.course_id}).exec((err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              course.name = result.name;
+              course.desc = result.description;
+
+              res.render('trainer_view_course', {course: course});
+            }
+          });
+        }
+      });
+    }
+  });
 });
 
 export default router;

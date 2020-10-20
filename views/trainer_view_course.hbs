@@ -32,29 +32,25 @@
     <div style="width: 30%" class="border rounded">
       <ul class="nav nav-pills nav-fill flex-column" style="margin: 20px;">
         <li class="nav-item">
-          <a class="nav-link active" href="/users/trainer/home">Overview</a>
+          <a class="nav-link" href="/users/trainer/home">Overview</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/trainer/view_course">View Course</a>
+          <a class="nav-link active" href="/users/trainer/view_course">View Course</a>
         </li>
       </ul>
     </div>
     <div class="border rounded" style="width: 68%;">
       <div class="d-flex flex-row-reverse">
-        <div style="padding-top: 20px; padding-right: 20px">
+        {{!-- <div style="padding-top: 20px; padding-right: 20px">
           <button type="button" class="btn btn-success" onclick="window.location='/users/trainer/update';">Update
             Information</button>
-        </div>
+        </div> --}}
       </div>
       <div style="padding: 20px;">
-        <h1>Trainer Infomation Page</h1>
+        <h1>Course Infomation</h1>
         <ol>
-          <li>Username: <span>{{data.user.username}}</span></li>
-          <li>Name: <span>{{data.info.name}}</span></li>
-          <li>Email: <span>{{data.info.email}}</span></li>
-          <li>Phone: <span>{{data.info.phone}}</span></li>
-          <li>Working Place: <span>{{data.info.working_place}}</span></li>
-          <li>Working Type: <span>{{data.info.type}}</span></li>
+          <li>Name: {{course.name}}</li>
+          <li>Desc: {{course.description}}</li>
         </ol>
       </div>
     </div>
