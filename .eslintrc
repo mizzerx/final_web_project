@@ -10,7 +10,9 @@
     "sourceType": "module"
   },
   "rules": {
-    "new-cap": "off"
+    "new-cap": "off",
+    "max-len": "warn",
+    "no-unused-vars": "warn"
   },
   "parser": "babel-eslint"
 }

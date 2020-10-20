@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title>Admin</title>
+  <style>
+    form {
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div align="center">
+    <img src="/images/FGW_logo_d.jpg" alt="logo">
+  </div>
+  <br><br>
+  <nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-danger my-2 my-lg-0" onclick="window.location='/users/logout';">Logout</button>
+    {{!-- <a class="nav-link" href="#">{{}}</a> --}}
+  </nav>
+  <br><br>
+  <div class="d-flex justify-content-between">
+    <div style="width: 30%" class="border rounded">
+      <ul class="nav nav-pills nav-fill flex-column" style="margin: 20px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/admin/home">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/admin/list_all_staff">Training Staff Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/admin/list_all_trainer">Trainer Account</a>
+        </li>
+      </ul>
+    </div>
+    <div class="border rounded" style="width: 68%;">
+      <div class="d-flex flex-row-reverse">
+        <div style="padding-top: 20px; padding-right: 20px">
+          <button type="button" class="btn btn-success" onclick="window.location='/users/admin/add_staff';">Add more
+            user</button>
+        </div>
+      </div>
+      <div style="padding: 20px;">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">User_id</th>
+              <th scope="col">Username</th>
+              <th scope="col">Password</th>
+              <th scope="col">Created date</th>
+              <th scope="col">Option</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each user}}
+            <tr>
+              <th scope="row">{{@index}}</th>
+              <td>{{_id}}</td>
+              <td>{{username}}</td>
+              <td>Hidden</td>
+              <td>{{created_date}}</td>
+              <td class="d-flex flex-row">
+                <form action="/users/admin/update_staff" method="POST">
+                  <input type="hidden" name="_id" value={{_id}}>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+                <form action="/users/admin/delete_staff" method="POST" enctype="application/x-www-form-urlencoded">
+                  <input type="hidden" name="_id" value={{_id}}>
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

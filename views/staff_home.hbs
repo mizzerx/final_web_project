@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <style>
+    span {
+      font-weight: bold;
+    }
+  </style>
+  <title>Staff</title>
+</head>
+
+<body>
+  <div align="center">
+    <img src="/images/FGW_logo_d.jpg" alt="logo">
+  </div>
+  <br><br>
+  <nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-danger my-2 my-lg-0" onclick="window.location='/users/logout';">Logout</button>
+    {{!-- <a class="nav-link" href="#">{{}}</a> --}}
+  </nav>
+  <br><br>
+  <div class="d-flex justify-content-between">
+    <div style="width: 30%" class="border rounded">
+      <ul class="nav nav-pills nav-fill flex-column" style="margin: 20px;">
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/staff/home">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_trainer">Trainer Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_trainee">Trainee Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_topic">Topic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_course">Course</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_courseCategory">Course Category</a>
+        </li>
+      </ul>
+    </div>
+    <div class="border rounded" style="width: 68%;">
+      <div class="d-flex flex-row-reverse">
+        {{!-- <div style="padding-top: 20px; padding-right: 20px">
+          <button type="button" class="btn btn-success" onclick="window.location='/users/add_admin';">Add more
+            user</button>
+        </div> --}}
+      </div>
+      <div style="padding: 20px;">
+        <h1>Training Staff Management Page</h1>
+        <ol>
+          <li>Username: <span>{{data.user.username}}</span></li>
+          <li>Name: <span>{{data.info.name}}</span></li>
+          <li>Email: <span>{{data.info.email}}</span></li>
+          <li>Phone: <span>{{data.info.phone}}</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title>Admin</title>
+</head>
+
+<body>
+  <div align="center">
+    <img src="/images/FGW_logo_d.jpg" alt="logo">
+  </div>
+  <br><br>
+  <nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-danger my-2 my-lg-0" onclick="window.location='/users/logout';">Logout</button>
+  </nav>
+  <br><br>
+  <div class="d-flex justify-content-between">
+    <div style="width: 30%" class="border rounded">
+      <ul class="nav nav-pills nav-fill flex-column" style="margin: 20px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/home">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_trainer">Trainer Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/staff/list_all_trainee">Trainee Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_topic">Topic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_course">Course</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_courseCategory">Course Category</a>
+        </li>
+      </ul>
+    </div>
+    <div class="border rounded" style="width: 68%;">
+      {{!-- <div class="d-flex flex-row-reverse">
+        <div style="padding-top: 20px; padding-right: 20px">
+          <button type="button" class="btn btn-success">Add more user</button>
+        </div>
+      </div> --}}
+      <div style="padding: 20px;">
+        <h1>Update Account</h1>
+        <hr>
+        <form action="/users/staff/update_trainee_account" method="POST" enctype="application/x-www-form-urlencoded">
+          <div class="form-group">
+            <label for="usr">Username: {{data.user.username}}</label>
+            <input type="text" class="form-control" id="usr" name="usr">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input type="text" class="form-control" id="pwd" name="pwd" onkeyup="check();">
+          </div>
+          <div class="form-group">
+            <label for="repwd">Re-enter Password</label>
+            <input type="text" class="form-control" id="repwd" name="repwd" onkeyup="check();">
+            <span id="message"></span>
+          </div>
+          <input type="hidden" name="_method" value="PUT">
+          <input type="hidden" name="_id" value="{{data.user._id}}">
+          <button type="submit" class="btn btn-primary" id="submit_acc">Update</button>
+        </form>
+        <hr>
+        <h1>Update Trainer Infomation</h1>
+        <hr>
+        <form action="/users/staff/update_trainee_info" method="POST" enctype="application/x-www-form-urlencoded">
+          <div class="form-group">
+            <label for="name">Name: {{data.info.name}}</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+          <div class="form-group">
+            <label for="age">Age: {{data.info.age}}</label>
+            <input type="number" class="form-control" id="age" name="age">
+          </div>
+          {{#if data.info.gender}}
+          <div class="form-group">
+            <label for="type">Gender</label>
+            <select class="form-control" id="gender" name="gender">
+              <option value="Male" selected>Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          {{else}}
+          <div class="form-group">
+            <label for="type">Gender</label>
+            <select class="form-control" id="gender" name="gender">
+              <option value="Male">Male</option>
+              <option value="Female" selected>Female</option>
+            </select>
+          </div>
+          {{/if}}
+          <div class="form-group">
+            <label for="email">Email: {{data.info.email}}</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone: {{data.info.phone}}</label>
+            <input type="text" class="form-control" id="phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="phone">TOIC Score: {{data.info.score}}</label>
+            <input type="number" class="form-control" id="score" name="score">
+          </div>
+          <input type="hidden" name="_method" value="PUT">
+          <input type="hidden" name="_id" value="{{data.user._id}}">
+          <button type="submit" class="btn btn-primary" id="submit_info">Update</button>
+        </form>
+        <hr>
+        <h1>Assign Course</h1>
+        <hr>
+        Curently Course
+        <ol>
+          <li>{{data.assign}}</li>
+        </ol>
+        <form action="/users/staff/assign_course_trainee" method="post" enctype="application/x-www-form-urlencoded">
+          <div class="form-group">
+            <label for="type">Course</label>
+            <select class="form-control" id="course" name="course">
+              {{#each data.course}}
+              <option value="{{_id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <input type="hidden" name="_id" value="{{data._id}}">
+          <input type="hidden" name="_method" value="PUT">
+          <button type="submit" class="btn btn-primary" id="submit_info">Assign</button>
+        </form>
+        <br><br>
+        {{!-- {{#if err}}
+        <div class="alert alert-danger" role="alert">
+          {{err}}
+        </div>
+        {{/if}} --}}
+      </div>
+    </div>
+  </div>
+  <script src="/javascripts/CheckRetypePwd.js"></script>
+</body>
+
+</html>

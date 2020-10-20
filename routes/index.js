@@ -3,7 +3,8 @@ const router = Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', {title: 'Express'});
+  const {msg} = req.query;
+  res.render('index', {err: msg});
 });
 
 export default router;

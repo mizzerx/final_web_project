@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title>Admin</title>
+</head>
+
+<body>
+  <div align="center">
+    <img src="/images/FGW_logo_d.jpg" alt="logo">
+  </div>
+  <br><br>
+  <nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-danger my-2 my-lg-0" onclick="window.location='/users/logout';">Logout</button>
+  </nav>
+  <br><br>
+  <div class="d-flex justify-content-between">
+    <div style="width: 30%" class="border rounded">
+      <ul class="nav nav-pills nav-fill flex-column" style="margin: 20px;">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/home">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_trainer">Trainer Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/staff/list_all_trainee">Trainee Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_topic">Topic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_course">Course</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/staff/list_all_courseCategory">Course Category</a>
+        </li>
+      </ul>
+    </div>
+    <div class="border rounded" style="width: 68%;">
+      {{!-- <div class="d-flex flex-row-reverse">
+        <div style="padding-top: 20px; padding-right: 20px">
+          <button type="button" class="btn btn-success">Add more user</button>
+        </div>
+      </div> --}}
+      <div style="padding: 20px;">
+        <form action="/users/staff/add_trainee" method="POST">
+          <div class="form-group">
+            <label for="usr">Username</label>
+            <input type="text" class="form-control" id="usr" name="usr" required>
+          </div>
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input type="text" class="form-control" id="pwd" name="pwd" required>
+          </div>
+          <div class="form-group">
+            <label for="repwd">Re-enter Password</label>
+            <input type="text" class="form-control" id="repwd" name="repwd" required>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+          </div>
+          <div class="form-group">
+            <label for="type">Gender</label>
+            <select class="form-control" id="gender" name="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">TOIC Score</label>
+            <input type="number" class="form-control" id="score" name="score" required>
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br><br>
+        {{!-- {{#if err}}
+      <div class="alert alert-danger" role="alert">
+        {{err}}
+      </div>
+      {{/if}} --}}
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
