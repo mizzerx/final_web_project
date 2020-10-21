@@ -1,5 +1,7 @@
 import AppUser from '../models/AppUserModel';
 import Trainer from '../models/TrainerModel';
+import Topic from '../models/TopicModel';
+import Course from '../models/CourseModel';
 
 const GetTrainerHome = (req, res, next) => {
   Trainer.findOne({account_id: req.session.userId})
