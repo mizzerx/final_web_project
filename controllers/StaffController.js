@@ -16,41 +16,44 @@ const ListTrainerStaff = (req, res, next) => {
       .catch((err) => console.log(err));
 };
 
-const AddTrainerStaff = async (req, res, next) => {
+const AddTrainerStaff = (req, res, next) => {
   const {usr, pwd, name, email, phone, place, type} = req.body;
-  AppUser.findOne({username: usr}).exec((err, user) => {
+  const criteria = {
+    username: new RegExp('^' + usr.trim() + '$', 'i'),
+  };
+  AppUser.find(criteria).limit(1).exec(async (err, user) => {
     if (err) {
-      return console.log(err);
-    } else if (user) {
+      console.log(err);
+    } else if (user.length > 0) {
       const msg = 'This user has already exist';
-      return res.redirect(`/users/staff/add_trainer?msg=${msg}`);
-    }
-  });
-
-  const newUser = new AppUser({
-    username: usr,
-    password: pwd,
-    role: 'trainer',
-  });
-
-  await newUser.save();
-
-  AppUser.findOne({username: usr}).exec(async (err, user) => {
-    if (err) {
-      return console.log(err);
+      res.redirect(`/users/staff/add_trainer?msg=${msg}`);
     } else {
-      const newTrainer = new Trainer({
-        name: name,
-        email: email,
-        phone: phone,
-        working_place: place,
-        type: type,
-        account_id: user._id,
+      const newUser = new AppUser({
+        username: usr,
+        password: pwd,
+        role: 'trainer',
       });
 
-      await newTrainer.save();
+      await newUser.save();
 
-      return res.redirect('/users/staff/list_all_trainer');
+      AppUser.findOne({username: usr}).exec(async (err, user) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          const newTrainer = new Trainer({
+            name: name,
+            email: email,
+            phone: phone,
+            working_place: place,
+            type: type,
+            account_id: user._id,
+          });
+
+          await newTrainer.save();
+
+          return res.redirect('/users/staff/list_all_trainer');
+        }
+      });
     }
   });
 };
@@ -166,34 +169,32 @@ const UpdateTrainerAccountStaff = (req, res, next) => {
       (err, data) => {
         if (err) {
           console.log(err);
-          return res.render('staff_update_trainer');
+          res.render('staff_update_trainer');
         } else {
           console.log(data);
-          return res.redirect('/users/staff/list_all_trainer');
+          res.redirect('/users/staff/list_all_trainer');
         }
       },
   );
 };
 
-const DeleteTrainerStaff = async (req, res, next) => {
+const DeleteTrainerStaff = (req, res, next) => {
   const {_id} = req.body;
-  await AppUser.findOneAndRemove({_id: _id}, (err) => {
+  AppUser.findOneAndRemove({_id: _id}, (err) => {
     if (err) {
       console.log(err);
-      return res.redirect('/users/staff/list_all_trainer');
+      res.redirect('/users/staff/list_all_trainer');
     } else {
       console.log('OK');
-      return res.redirect('/users/staff/list_all_trainer');
-    }
-  });
-
-  Trainer.findByIdAndRemove({account_id: _id}, (err) => {
-    if (err) {
-      console.log(err);
-      return res.redirect('/users/staff/list_all_trainer');
-    } else {
-      console.log('OK');
-      return res.redirect('/users/staff/list_all_trainer');
+      Trainer.findOneAndRemove({account_id: _id}, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect('/users/staff/list_all_trainer');
+        } else {
+          console.log('OK');
+          res.redirect('/users/staff/list_all_trainer');
+        }
+      });
     }
   });
 };
@@ -208,42 +209,45 @@ const ListTraineeStaff = (req, res, next) => {
       .catch((err) => console.log(err));
 };
 
-const AddTraineeStaff = async (req, res, next) => {
+const AddTraineeStaff = (req, res, next) => {
   const {usr, pwd, name, age, gender, email, phone, score} = req.body;
-  AppUser.findOne({username: usr}).exec((err, user) => {
+  const criteria = {
+    username: new RegExp('^' + usr.trim() + '$', 'i'),
+  };
+  AppUser.find(criteria).limit(1).exec(async (err, user) => {
     if (err) {
       return console.log(err);
-    } else if (user) {
+    } else if (user.length > 0) {
       const msg = 'This user has already exist';
       return res.redirect(`/users/staff/add_trainee?msg=${msg}`);
-    }
-  });
-
-  const newUser = new AppUser({
-    username: usr,
-    password: pwd,
-    role: 'trainee',
-  });
-
-  await newUser.save();
-
-  AppUser.findOne({username: usr}).exec(async (err, user) => {
-    if (err) {
-      return console.log(err);
     } else {
-      const newTrainee = new Trainee({
-        name: name,
-        age: age,
-        gender: gender,
-        email: email,
-        phone: phone,
-        TOIC_score: score,
-        account_id: user._id,
+      const newUser = new AppUser({
+        username: usr,
+        password: pwd,
+        role: 'trainee',
       });
 
-      await newTrainee.save();
+      await newUser.save();
 
-      return res.redirect('/users/staff/list_all_trainee');
+      AppUser.findOne({username: usr}).exec(async (err, user) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          const newTrainee = new Trainee({
+            name: name,
+            age: age,
+            gender: gender,
+            email: email,
+            phone: phone,
+            TOIC_score: score,
+            account_id: user._id,
+          });
+
+          await newTrainee.save();
+
+          return res.redirect('/users/staff/list_all_trainee');
+        }
+      });
     }
   });
 };
@@ -377,20 +381,18 @@ const DeleteTraineeStaff = async (req, res, next) => {
   await AppUser.findOneAndRemove({_id: _id}, (err) => {
     if (err) {
       console.log(err);
-      return res.redirect('/users/staff/list_all_trainee');
+      res.redirect('/users/staff/list_all_trainee');
     } else {
       console.log('OK');
-      return res.redirect('/users/staff/list_all_trainee');
-    }
-  });
-
-  Trainer.findByIdAndRemove({account_id: _id}, (err) => {
-    if (err) {
-      console.log(err);
-      return res.redirect('/users/staff/list_all_trainee');
-    } else {
-      console.log('OK');
-      return res.redirect('/users/staff/list_all_trainee');
+      Trainer.findOneAndRemove({account_id: _id}, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect('/users/staff/list_all_trainee');
+        } else {
+          console.log('OK');
+          res.redirect('/users/staff/list_all_trainee');
+        }
+      });
     }
   });
 };
@@ -407,26 +409,27 @@ const ListTopicStaff = (req, res, next) => {
 
 const AddTopicStaff = (req, res, next) => {
   const {name, desc} = req.body;
-  Topic.findOne({name: name})
-      .exec()
-      .then((value) => {
-        if (value) {
-          const msg = 'This topic is alredy exist. Try again';
-          return res.redirect(`/users/staff/add_topic?msg=${msg}`);
-        }
-      })
-      .catch((err) => {
-        res.send(err);
+  const criteria = {
+    name: new RegExp('^' + name.trim() + '$', 'i'),
+  };
+  Topic.find(criteria).limit(1).exec((err, topic) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/users/staff/list_all_topic');
+    } else if (topic.length > 0) {
+      console.log('Duplicate Topic');
+      res.redirect('/users/staff/list_all_topic');
+    } else {
+      const newTopic = new Topic({
+        name: name,
+        description: desc,
       });
 
-  const newTopic = new Topic({
-    name: name,
-    description: desc,
+      newTopic.save();
+
+      res.redirect('/users/staff/list_all_topic');
+    }
   });
-
-  newTopic.save();
-
-  return res.redirect('/users/staff/list_all_topic');
 };
 
 const UpdateTopicStaff = (req, res, next) => {
@@ -483,7 +486,7 @@ const PUTUpdateTopicStaff = (req, res, next) => {
     newValue.description = desc;
   }
 
-  Topic.findByIdAndUpdate({_id: _id}, {$set: newValue}, {new: true})
+  Topic.findOneAndUpdate({_id: _id}, {$set: newValue}, {new: true})
       .exec()
       .then((value) => {
         console.log(value);
@@ -496,7 +499,7 @@ const PUTUpdateTopicStaff = (req, res, next) => {
 
 const DeleteTopicStaff = (req, res, next) => {
   const {_id} = req.body;
-  Topic.findByIdAndRemove({_id: _id})
+  Topic.findOneAndRemove({_id: _id})
       .exec()
       .then((value) => {
         console.log(value);
@@ -519,24 +522,27 @@ const ListCourseStaff = (req, res, next) => {
 
 const AddCourseStaff = (req, res, next) => {
   const {name, desc} = req.body;
-  Course.findOne({name: name})
-      .exec()
-      .then((value) => {
-        const msg = 'This course is alredy exist. Try again';
-        res.redirect(`/users/staff/add_course?msg=${msg}`);
-      })
-      .catch((err) => {
-        res.send(err);
+  const criteria = {
+    name: new RegExp('^' + name.trim() + '$', 'i'),
+  };
+  Course.find(criteria).limit(1).exec((err, course) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/users/staff/list_all_course');
+    } else if (course.length > 0) {
+      console.log('Duplicate course');
+      res.redirect('/users/staff/list_all_course');
+    } else {
+      const newCourse = new Course({
+        name: name,
+        description: desc,
       });
 
-  const newCourse = new Course({
-    name: name,
-    description: desc,
+      newCourse.save();
+
+      res.redirect('/users/staff/list_all_course');
+    }
   });
-
-  newCourse.save();
-
-  return res.redirect('/users/staff/list_all_course');
 };
 
 const UpdateCourseStaff = (req, res, next) => {
@@ -593,7 +599,7 @@ const PutUpdateCourseStaff = (req, res, next) => {
     newValue.description = desc;
   }
 
-  Course.findByIdAndUpdate({_id: _id}, {$set: newValue}, {new: true})
+  Course.findOneAndUpdate({_id: _id}, {$set: newValue}, {new: true})
       .exec()
       .then((value) => {
         console.log(value);
@@ -606,7 +612,7 @@ const PutUpdateCourseStaff = (req, res, next) => {
 
 const DeleteCourseStaff = (req, res, next) => {
   const {_id} = req.body;
-  Course.findByIdAndRemove({_id: _id})
+  Course.findOneAndRemove({_id: _id})
       .exec()
       .then((value) => {
         console.log(value);
@@ -629,24 +635,27 @@ const ListCategoryStaff = (req, res, next) => {
 
 const AddCategoryStaff = (req, res, next) => {
   const {name, desc} = req.body;
-  CourseCategory.findOne({name: name})
-      .exec()
-      .then((value) => {
-        const msg = 'This course is alredy exist. Try again';
-        res.redirect(`/users/staff/add_courseCategory?msg=${msg}`);
-      })
-      .catch((err) => {
-        res.send(err);
+  const criteria = {
+    name: new RegExp('^' + name.trim() + '$', 'i'),
+  };
+  CourseCategory.find(criteria).limit(1).exec((err, category) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/users/staff/list_all_courseCategory');
+    } else if (category.length > 0) {
+      console.log('Duplicate category');
+      res.redirect('/users/staff/list_all_courseCategory');
+    } else {
+      const newCourseCategory = new CourseCategory({
+        name: name,
+        description: desc,
       });
 
-  const newCourseCategory = new CourseCategory({
-    name: name,
-    description: desc,
+      newCourseCategory.save();
+
+      res.redirect('/users/staff/list_all_courseCategory');
+    }
   });
-
-  newCourseCategory.save();
-
-  return res.redirect('/users/staff/list_all_courseCategory');
 };
 
 const UpdateCategoryStaff = (req, res, next) => {
@@ -677,7 +686,7 @@ const PutUpdateCategoryStaff = (req, res, next) => {
     newValue.description = desc;
   }
 
-  CourseCategory.findByIdAndUpdate(
+  CourseCategory.findOneAndUpdate(
       {_id: _id},
       {$set: newValue},
       {new: true},
@@ -694,7 +703,7 @@ const PutUpdateCategoryStaff = (req, res, next) => {
 
 const DeleteCategoryStaff = (req, res, next) => {
   const {_id} = req.body;
-  CourseCategory.findByIdAndRemove({_id: _id})
+  CourseCategory.findOneAndRemove({_id: _id})
       .exec()
       .then((value) => {
         console.log(value);

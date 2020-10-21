@@ -1,10 +1,9 @@
 {
   "name": "mywebapplication",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www --exec babel-node",
-    "test": "nodemon ./bin/www --exec babel-node"
+    "start": "nodemon ./bin/www --exec babel-node"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

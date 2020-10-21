@@ -11,39 +11,42 @@ const ListStaffAdmin = (req, res, next) => {
       .catch((err) => console.log(err));
 };
 
-const AddStaffAdmin = async (req, res, next) => {
+const AddStaffAdmin = (req, res, next) => {
   const {usr, pwd, name, email, phone} = req.body;
-  AppUser.findOne({username: usr}).exec((err, user) => {
+  const criteria = {
+    username: new RegExp('^' + usr.trim() + '$', 'i'),
+  };
+  AppUser.find(criteria).limit(1).exec(async (err, user) => {
     if (err) {
       return console.log(err);
-    } else if (user) {
+    } else if (user.length > 0) {
       const msg = 'This user has already exist';
       return res.redirect(`/admin/add_staff?msg=${msg}`);
-    }
-  });
-
-  const newUser = new AppUser({
-    username: usr,
-    password: pwd,
-    role: 'staff',
-  });
-
-  await newUser.save();
-
-  AppUser.findOne({username: usr}).exec(async (err, user) => {
-    if (err) {
-      return console.log(err);
     } else {
-      const newStaff = new TrainingStaff({
-        name: name,
-        email: email,
-        phone: phone,
-        account_id: user._id,
+      const newUser = new AppUser({
+        username: usr,
+        password: pwd,
+        role: 'staff',
       });
 
-      await newStaff.save();
+      await newUser.save();
 
-      return res.redirect('/users/admin/list_all_staff');
+      AppUser.findOne({username: usr}).exec(async (err, user) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          const newStaff = new TrainingStaff({
+            name: name,
+            email: email,
+            phone: phone,
+            account_id: user._id,
+          });
+
+          await newStaff.save();
+
+          return res.redirect('/users/admin/list_all_staff');
+        }
+      });
     }
   });
 };
@@ -136,25 +139,21 @@ const UpdateStaffAccountAdmin = (req, res, next) => {
   );
 };
 
-const DeleteStaffAdmin = async (req, res, next) => {
+const DeleteStaffAdmin = (req, res, next) => {
   const {_id} = req.body;
-  await AppUser.findOneAndRemove({_id: _id}, (err) => {
+  AppUser.findOneAndRemove({_id: _id}, (err) => {
     if (err) {
       console.log(err);
-      return res.redirect('/users/admin/list_all_staff');
     } else {
-      console.log('OK');
-      return res.redirect('/users/admin/list_all_staff');
-    }
-  });
-
-  TrainingStaff.findByIdAndRemove({account_id: _id}, (err) => {
-    if (err) {
-      console.log(err);
-      return res.redirect('/users/admin/list_all_staff');
-    } else {
-      console.log('OK');
-      return res.redirect('/users/admin/list_all_staff');
+      TrainingStaff.findOneAndRemove({account_id: _id}, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect('/users/admin/list_all_staff');
+        } else {
+          console.log('OK');
+          res.redirect('/users/admin/list_all_staff');
+        }
+      });
     }
   });
 };
@@ -168,41 +167,44 @@ const ListTrainerAdmin = (req, res, next) => {
       .catch((err) => console.log(err));
 };
 
-const AddTrainerAdmin = async (req, res, next) => {
+const AddTrainerAdmin = (req, res, next) => {
   const {usr, pwd, name, email, phone, place, type} = req.body;
-  AppUser.findOne({username: usr}).exec((err, user) => {
+  const criteria = {
+    username: new RegExp('^' + usr.trim() + '$', 'i'),
+  };
+  AppUser.find(criteria).limit(1).exec(async (err, user) => {
     if (err) {
-      return console.log(err);
-    } else if (user) {
+      console.log(err);
+    } else if (user.length > 0) {
       const msg = 'This user has already exist';
-      return res.redirect(`/users/admin/add_trainer?msg=${msg}`);
-    }
-  });
-
-  const newUser = new AppUser({
-    username: usr,
-    password: pwd,
-    role: 'trainer',
-  });
-
-  await newUser.save();
-
-  AppUser.findOne({username: usr}).exec(async (err, user) => {
-    if (err) {
-      return console.log(err);
+      res.redirect(`/users/admin/add_trainer?msg=${msg}`);
     } else {
-      const newTrainer = new Trainer({
-        name: name,
-        email: email,
-        phone: phone,
-        working_place: place,
-        type: type,
-        account_id: user._id,
+      const newUser = new AppUser({
+        username: usr,
+        password: pwd,
+        role: 'trainer',
       });
 
-      await newTrainer.save();
+      await newUser.save();
 
-      return res.redirect('/users/admin/list_all_trainer');
+      AppUser.findOne({username: usr}).exec(async (err, user) => {
+        if (err) {
+          return console.log(err);
+        } else {
+          const newTrainer = new Trainer({
+            name: name,
+            email: email,
+            phone: phone,
+            working_place: place,
+            type: type,
+            account_id: user._id,
+          });
+
+          await newTrainer.save();
+
+          return res.redirect('/users/admin/list_all_trainer');
+        }
+      });
     }
   });
 };
@@ -303,25 +305,21 @@ const UpdateTrainerAccountAdmin = (req, res, next) => {
   );
 };
 
-const DeleteTrainerAdmin = async (req, res, next) => {
+const DeleteTrainerAdmin = (req, res, next) => {
   const {_id} = req.body;
-  await AppUser.findOneAndRemove({_id: _id}, (err) => {
+  AppUser.findOneAndRemove({_id: _id}, (err) => {
     if (err) {
       console.log(err);
-      return res.redirect('/users/admin/list_all_trainer');
     } else {
-      console.log('OK');
-      return res.redirect('/users/admin/list_all_trainer');
-    }
-  });
-
-  Trainer.findByIdAndRemove({account_id: _id}, (err) => {
-    if (err) {
-      console.log(err);
-      return res.redirect('/users/admin/list_all_trainer');
-    } else {
-      console.log('OK');
-      return res.redirect('/users/admin/list_all_trainer');
+      Trainer.findOneAndRemove({account_id: _id}, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect('/users/admin/list_all_trainer');
+        } else {
+          console.log('OK');
+          res.redirect('/users/admin/list_all_trainer');
+        }
+      });
     }
   });
 };

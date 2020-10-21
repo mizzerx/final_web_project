@@ -29,26 +29,44 @@ const GetTrainerHome = (req, res, next) => {
 
 const GetViewCourse = (req, res, next) => {
   const course = {};
+  const topicResult = {};
   Trainer.findOne({account_id: req.session.userId}).exec((err, user) => {
     if (err) {
       console.log(err);
     } else {
-      Topic.findOne({_id: user.topic_id}).exec((err, topic) => {
-        if (err) {
-          console.log(err);
-        } else {
-          Course.findOne({_id: topic.course_id}).exec((err, result) => {
-            if (err) {
-              console.log(err);
-            } else {
-              course.name = result.name;
-              course.desc = result.description;
+      if (!user.topic_id) {
+        course.name = 'Not yet';
+        course.desc = 'Not yet';
+        topicResult.name = 'Not yet';
+        topicResult.desc = 'Not yet';
+        res.render('trainer_view_course', {data: {
+          course: course,
+          topic: topicResult,
+        }});
+      } else {
+        Topic.findOne({_id: user.topic_id}).exec((err, topic) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(topic);
+            topicResult.name = topic.name;
+            topicResult.desc = topic.description;
+            Course.findOne({_id: topic.course_id}).exec((err, result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                course.name = result.name;
+                course.desc = result.description;
 
-              res.render('trainer_view_course', {course: course});
-            }
-          });
-        }
-      });
+                res.render('trainer_view_course', {data: {
+                  course: course,
+                  topic: topicResult,
+                }});
+              }
+            });
+          }
+        });
+      }
     }
   });
 };
