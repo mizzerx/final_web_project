@@ -51,19 +51,29 @@ const GetViewCourse = (req, res, next) => {
             console.log(topic);
             topicResult.name = topic.name;
             topicResult.desc = topic.description;
-            Course.findOne({_id: topic.course_id}).exec((err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                course.name = result.name;
-                course.desc = result.description;
+            if (!topic.course_id) {
+              course.name = 'Not yet';
+              course.desc = 'Not yet';
 
-                res.render('trainer_view_course', {data: {
-                  course: course,
-                  topic: topicResult,
-                }});
-              }
-            });
+              res.render('trainer_view_course', {data: {
+                course: course,
+                topic: topicResult,
+              }});
+            } else {
+              Course.findOne({_id: topic.course_id}).exec((err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  course.name = result.name;
+                  course.desc = result.description;
+
+                  res.render('trainer_view_course', {data: {
+                    course: course,
+                    topic: topicResult,
+                  }});
+                }
+              });
+            }
           }
         });
       }

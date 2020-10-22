@@ -67,6 +67,7 @@ const UpdateTrainerStaff = (req, res, next) => {
       .exec()
       .then((value) => {
         user = {
+          _id: value._id,
           username: value.username,
         };
         Trainer.findOne({account_id: _id})
@@ -261,6 +262,7 @@ const UpdateTraineeStaff = (req, res, next) => {
       .exec()
       .then((value) => {
         user = {
+          _id: value._id,
           username: value.username,
         };
         Trainee.findOne({account_id: _id})
