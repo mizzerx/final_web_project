@@ -16,7 +16,6 @@ import {
   UpdateTrainerAdmin,
   UpdateTrainerInfoAdmin,
 } from '../controllers/AdminController';
-import Trainer from '../models/TrainerModel';
 import TrainingStaff from '../models/TrainingStaffModel';
 import {
   AddCategoryStaff,
@@ -51,8 +50,6 @@ import {
   UpdateTrainerInfoStaff,
   UpdateTrainerStaff,
 } from '../controllers/StaffController';
-import Course from '../models/CourseModel';
-import Topic from '../models/TopicModel';
 import {Login, Logout} from '../controllers/LoginController';
 import {GetTrainerHome, GetViewCourse} from '../controllers/TrainerController';
 const router = Router();
