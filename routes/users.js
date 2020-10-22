@@ -52,6 +52,7 @@ import {
 } from '../controllers/StaffController';
 import {Login, Logout} from '../controllers/LoginController';
 import {GetTrainerHome, GetViewCourse} from '../controllers/TrainerController';
+import Course from '../models/CourseModel';
 const router = Router();
 
 // Use Session
@@ -270,5 +271,24 @@ router.put('/staff/assign_topic_trainer', isStaff, AssignTopicForTrainer);
 router.get('/trainer/home', isTrainer, GetTrainerHome);
 
 router.get('/trainer/view_course', isTrainer, GetViewCourse);
+
+// Search
+router.post('/staff/search_course', (req, res, next) => {
+  const {search} = req.body;
+  const criteraia = {
+    name: new RegExp(search, 'i'),
+  };
+  Course.find(criteraia).exec((err, result) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/users/staff/list_all_course');
+    } else {
+      res.render('staff_course', {data: {
+        course: result,
+        count: result.length,
+      }});
+    }
+  });
+});
 
 export default router;

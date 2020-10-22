@@ -517,7 +517,12 @@ const ListCourseStaff = (req, res, next) => {
   Course.find({})
       .exec()
       .then((course) => {
-        res.render('staff_course', {course: course});
+        Course.countDocuments((err, count) => {
+          res.render('staff_course', {data: {
+            course: course,
+            count: count,
+          }});
+        });
       })
       .catch((err) => console.log(err));
 };
