@@ -1,8 +1,8 @@
-import {Router} from 'express';
-import AppUser from '../models/AppUserModel';
-import session from 'express-session';
-import {isAdmin, isStaff, isTrainer} from '../middlewares/RequiresLogin';
-import {
+const {Router} = require('express');
+const AppUser = require('../models/AppUserModel');
+const session = require('express-session');
+const {isAdmin, isStaff, isTrainer} = require('../middlewares/RequiresLogin');
+const {
   AddStaffAdmin,
   AddTrainerAdmin,
   DeleteStaffAdmin,
@@ -15,9 +15,9 @@ import {
   UpdateTrainerAccountAdmin,
   UpdateTrainerAdmin,
   UpdateTrainerInfoAdmin,
-} from '../controllers/AdminController';
-import TrainingStaff from '../models/TrainingStaffModel';
-import {
+} = require('../controllers/AdminController');
+const TrainingStaff = require('../models/TrainingStaffModel');
+const {
   AddCategoryStaff,
   AddCourseStaff,
   AddTopicStaff,
@@ -49,10 +49,10 @@ import {
   UpdateTrainerAccountStaff,
   UpdateTrainerInfoStaff,
   UpdateTrainerStaff,
-} from '../controllers/StaffController';
-import {Login, Logout} from '../controllers/LoginController';
-import {GetTrainerHome, GetViewCourse} from '../controllers/TrainerController';
-import Course from '../models/CourseModel';
+} = require('../controllers/StaffController');
+const {Login, Logout} = require('../controllers/LoginController');
+const {GetTrainerHome, GetViewCourse} = require('../controllers/TrainerController');
+const Course = require('../models/CourseModel');
 const router = Router();
 
 // Use Session
@@ -291,4 +291,4 @@ router.post('/staff/search_course', (req, res, next) => {
   });
 });
 
-export default router;
+module.exports = router;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const CouseCategorySchema = new mongoose.Schema({
   name: {
@@ -13,4 +13,4 @@ const CourseCategory = mongoose.model(
     CouseCategorySchema,
 );
 
-export default CourseCategory;
+module.exports = CourseCategory;

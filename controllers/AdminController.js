@@ -1,6 +1,6 @@
-import AppUser from '../models/AppUserModel';
-import TrainingStaff from '../models/TrainingStaffModel';
-import Trainer from '../models/TrainerModel';
+const AppUser = require('../models/AppUserModel');
+const TrainingStaff = require('../models/TrainingStaffModel');
+const Trainer = require('../models/TrainerModel');
 
 const ListStaffAdmin = (req, res, next) => {
   AppUser.find({role: 'staff'})
@@ -324,7 +324,7 @@ const DeleteTrainerAdmin = (req, res, next) => {
   });
 };
 
-export {
+module.exports = {
   ListStaffAdmin,
   AddStaffAdmin,
   UpdateStaffAdmin,

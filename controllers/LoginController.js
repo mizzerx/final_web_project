@@ -1,5 +1,5 @@
-import AppUser from '../models/AppUserModel';
-import bcrypt from 'bcrypt';
+const AppUser = require('../models/AppUserModel');
+const bcrypt = require('bcrypt');
 
 const Login = (req, res, next) => {
   const {usr, pwd} = req.body;
@@ -50,7 +50,7 @@ const Logout = (req, res, next) => {
   }
 };
 
-export {
+module.exports = {
   Login,
   Logout,
 };

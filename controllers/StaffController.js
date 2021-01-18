@@ -1,9 +1,9 @@
-import AppUser from '../models/AppUserModel';
-import CourseCategory from '../models/CourseCategoryModel';
-import Course from '../models/CourseModel';
-import Topic from '../models/TopicModel';
-import Trainee from '../models/TraineeModel';
-import Trainer from '../models/TrainerModel';
+const AppUser = require('../models/AppUserModel');
+const CourseCategory = require('../models/CourseCategoryModel');
+const Course = require('../models/CourseModel');
+const Topic = require('../models/TopicModel');
+const Trainee = require('../models/TraineeModel');
+const Trainer = require('../models/TrainerModel');
 
 
 // Trainer
@@ -794,7 +794,7 @@ const AssignTopicForTrainer = (req, res, next) => {
       });
 };
 
-export {
+module.exports = {
   ListTrainerStaff,
   AddTrainerStaff,
   UpdateTrainerStaff,

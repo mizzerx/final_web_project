@@ -1,4 +1,4 @@
-import {Router} from 'express';
+const {Router} = require('express');
 const router = Router();
 
 /* GET home page. */
@@ -7,4 +7,4 @@ router.get('/', (req, res, next) => {
   res.render('index', {err: msg});
 });
 
-export default router;
+module.exports = router;

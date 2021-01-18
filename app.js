@@ -1,18 +1,18 @@
-import createError from 'http-errors';
-import express, {json, urlencoded} from 'express';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
-import mongoose from 'mongoose';
-import methodOverride from 'method-override';
+const createError = require('http-errors');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
-import indexRouter from './routes/index';
-import usersRouter from './routes/users';
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
 // connect to DB
 const uri =
-  'mongodb+srv://admin:CuFbOCXgstySsAvb@cluster0.begsh.gcp.mongodb.net/WebDB?retryWrites=true&w=majority';
+  'mongodb+srv://admin:admin@cluster0.begsh.gcp.mongodb.net/studentDB?retryWrites=true&w=majority';
 mongoose.Promise = global.Promise;
 mongoose
     .connect(uri, {
@@ -28,8 +28,8 @@ app.set('views', 'views');
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
-app.use(json());
-app.use(urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(
@@ -62,4 +62,4 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-export default app;
+module.exports = app;

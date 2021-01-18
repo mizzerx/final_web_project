@@ -46,4 +46,4 @@ const isTrainee = (req, res, next) => {
   }
 };
 
-export {isAdmin, isStaff, isTrainer, isTrainee};
+module.exports = {isAdmin, isStaff, isTrainer, isTrainee};
